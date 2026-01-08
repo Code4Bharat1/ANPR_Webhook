@@ -15,9 +15,12 @@ app.use(cors({
     "https://anpr.nexcorealliance.com",
     "https://anpr-backend-y7aj.onrender.com"
   ],
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
+  methods: ["GET", "POST", "PUT", "DELETE","OPTIONS"],
+  credentials: true,
+   allowedHeaders: ["Content-Type", "Authorization"],
 }));
+
+
 
 
 
