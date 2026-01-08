@@ -1,0 +1,146 @@
+ANPR WEBHOOK & EVENTS API LIST
+=============================
+
+BASE URL
+--------
+http://localhost:5000
+
+
+WEBHOOK APIs
+------------
+
+1) Receive ANPR Event (Camera → Server)
+---------------------------------------
+POST /api/webhooks/anpr
+
+Description:
+Receives ANPR event data from the camera.
+Stores event in MongoDB.
+Duplicate-safe using messageId.
+
+Headers:
+Content-Type: application/json
+
+Response:
+200 OK
+{ "success": true }
+
+
+ANPR READ APIs (GET)
+--------------------
+
+2) Get All ANPR Events
+---------------------
+GET /api/anpr/events
+
+Description:
+Fetch latest ANPR events (sorted by newest first).
+Default limit applied.
+
+Response:
+200 OK
+{
+  "success": true,
+  "count": number,
+  "data": [ ...events ]
+}
+
+
+3) Get ANPR Event by MongoDB ID
+-------------------------------
+GET /api/anpr/events/:id
+
+Description:
+Fetch a single ANPR event using MongoDB _id.
+
+Example:
+GET /api/anpr/events/65a123abc456...
+
+Response:
+200 OK
+{
+  "success": true,
+  "data": { ...event }
+}
+
+Error:
+404 Not Found
+
+
+4) Get ANPR Event by Camera Message ID
+-------------------------------------
+GET /api/anpr/events/message/:messageId
+
+Description:
+Fetch a single event using camera-generated messageId.
+
+Example:
+GET /api/anpr/events/message/test-message-004
+
+Response:
+200 OK
+{
+  "success": true,
+  "data": { ...event }
+}
+
+
+5) Get Events by Vehicle Number Plate
+------------------------------------
+GET /api/anpr/events/plate/:numberPlate
+
+Description:
+Fetch all events related to a vehicle number plate.
+
+Example:
+GET /api/anpr/events/plate/MH12SJ8695
+
+Response:
+200 OK
+{
+  "success": true,
+  "count": number,
+  "data": [ ...events ]
+}
+
+
+6) Get Entry Events Only
+-----------------------
+GET /api/anpr/events/entry
+
+Description:
+Fetch only ENTRY events (isEntry = true).
+
+Response:
+200 OK
+{
+  "success": true,
+  "count": number,
+  "data": [ ...events ]
+}
+
+
+7) Get Exit Events Only
+----------------------
+GET /api/anpr/events/exit
+
+Description:
+Fetch only EXIT events (isEntry = false).
+
+Response:
+200 OK
+{
+  "success": true,
+  "count": number,
+  "data": [ ...events ]
+}
+
+
+NOTES
+-----
+
+- All webhook responses always return 200 OK
+- Webhook is idempotent (messageId is unique)
+- GET APIs are read-only
+- Suitable for Next.js dashboard consumption
+- Thunder Client / Postman friendly
