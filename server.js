@@ -14,8 +14,14 @@ app.use(cors({
     "http://localhost:3000",
     "https://anpr.nexcorealliance.com",
     "https://anpr-backend-y7aj.onrender.com"
-  ]
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
 }));
+
+
+
+
 
 
 app.listen(PORT, () => {
