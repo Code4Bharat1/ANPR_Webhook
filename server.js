@@ -13,7 +13,7 @@ app.use(cors({
   origin: [
     "http://localhost:3000",
     "https://anpr.nexcorealliance.com",
-    "www.https://anpr.nexcorealliance.com",
+    "https://www.anpr.nexcorealliance.com",
     "https://anpr-backend-y7aj.onrender.com"
   ],
   methods: ["GET", "POST", "PUT", "DELETE","OPTIONS"],
