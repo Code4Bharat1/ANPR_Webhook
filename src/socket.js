@@ -1,8 +1,10 @@
 import { Server } from "socket.io";
 
-let io;
+let io = null;
 
 export const initSocket = (server) => {
+  if (io) return io; // prevent re-init
+
   io = new Server(server, {
     cors: {
       origin: "*",
@@ -11,19 +13,22 @@ export const initSocket = (server) => {
   });
 
   io.on("connection", (socket) => {
-    console.log("Client connected:", socket.id);
+    console.log("✅ Socket connected:", socket.id);
 
     socket.on("disconnect", () => {
-      console.log("Client disconnected:", socket.id);
+      console.log("❌ Socket disconnected:", socket.id);
     });
   });
+
+  console.log("🟢 Socket.IO initialized");
 
   return io;
 };
 
 export const getIO = () => {
   if (!io) {
-    throw new Error("Socket.io not initialized!");
+    console.error("❌ Socket.IO NOT initialized");
+    return null;
   }
   return io;
 };
