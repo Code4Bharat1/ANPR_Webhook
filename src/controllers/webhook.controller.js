@@ -1,9 +1,9 @@
 import AnprEvent from "../models/anprmodel.model.js";
+import { getIO } from "../socket.js";
 
 const anprWebhook = async (req, res) => {
   const payload = req.body;
 
-  // Basic validation
   if (!payload || payload.type !== "event") {
     return res.status(200).json({ success: true });
   }
@@ -15,7 +15,6 @@ const anprWebhook = async (req, res) => {
     return res.status(200).json({ success: true });
   }
 
-  // Check for duplicate message
   const exists = await AnprEvent.findOne({
     messageId: data.messageid,
   });
@@ -24,8 +23,7 @@ const anprWebhook = async (req, res) => {
     return res.status(200).json({ success: true });
   }
 
-  // Store event
-  await AnprEvent.create({
+  const savedEvent = await AnprEvent.create({
     messageId: data.messageid,
 
     cameraId: metadata.camera_id,
@@ -52,7 +50,10 @@ const anprWebhook = async (req, res) => {
     rawPayload: payload,
   });
 
-  // Always ACK success
+  // 🔴 REAL-TIME EMIT (ADDED)
+  const io = getIO();
+  io.emit("anpr:new-event", savedEvent);
+
   return res.status(200).json({ success: true });
 };
 
