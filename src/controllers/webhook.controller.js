@@ -51,7 +51,7 @@ const anprWebhook = async (req, res) => {
     console.log("❌ Socket instance not available");
   } else {
     console.log("📡 Emitting event to clients...");
-    io.emit("anpr:new-event", savedEvent);
+    io.emit("anpr:new-event", savedEvent.messageId);
   }
 
   return res.status(200).json({ success: true });
