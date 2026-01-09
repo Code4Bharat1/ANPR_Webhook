@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import cors from "cors";
 dotenv.config();
 
 import http from "http";
@@ -9,6 +10,34 @@ import { initSocket } from "./src/socket.js";
 const PORT = process.env.PORT || 5000;
 
 connectDB();
+
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://anpr.nexcorealliance.com",
+      "https://www.anpr.nexcorealliance.com",
+      "https://anpr-backend-y7aj.onrender.com",
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://anpr.nexcorealliance.com",
+      "https://www.anpr.nexcorealliance.com",
+      "https://anpr-backend-y7aj.onrender.com",
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 const server = http.createServer(app);
 
